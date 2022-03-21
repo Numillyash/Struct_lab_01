@@ -1,95 +1,156 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include "help.h"
+#include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#include <time.h>
+#include <stdint.h>
+#include <locale.h>
 
-typedef enum
+void setPos(int row);
+
+void clearRowScreen(int row);
+
+int read_num();
+
+void init();
+
+//int t_shirt_prices[] = { 1 };
+//int cup_prices[] = { 1 };
+//int pillow_prices[] = { 1 };
+
+typedef struct{
+	int  ts_cost;
+	char males[2][7];
+	int  males_cost[2];
+	char colors[3][6];
+	int  colors_cost[3];
+	char sizes[4][3];
+	int  sizes_cost[4];
+	char prints[5][10];
+	char prints_texts[5][20];
+	int  prints_cost[5];
+}TSHIRT_NAMES;
+
+typedef union
 {
-	CREATE_CONFIG,
-	SAVE_CONFIG,
-	IMPORT_CONFIG,
-	VIEW_CONFIG,
-	CHECK_PRICE
-}MENU_TYPE;
+	struct
+	{
+		uint64_t save1;
+		uint64_t save2;
+		uint64_t save3;
+	};
+	uint64_t save[3];
+	struct {
+		uint8_t word[20];
+		uint8_t arg4;
+		uint8_t arg3;
+		uint8_t arg2;
+		uint8_t arg1;
+		//uint32_t type;
+	};
+}configuration;
 
 typedef enum
 {
 	/// <summary>
 	/// Type: T-shirt
 	/// Arg1: Male
-	/// Arg2: Color
-	/// Arg3: Size
-	/// Arg4: Print
 	/// </summary>
-	TSHIRT,
 	TSHIRT_MAN,
-	TSHIRT_WOMAN,
-	TSHIRT_RED,
-	TSHIRT_WHITE,
-	TSHIRT_BLACK,
+	TSHIRT_WOMAN
+}T_SHIRT_MALE;
+
+typedef enum
+{
+	/// <summary>
+	/// Type: T-shirt
+	/// Arg2: Color
+	/// </summary>
+	TSHIRT_COLOR_RED,
+	TSHIRT_COLOR_WHITE,
+	TSHIRT_COLOR_BLACK
+}T_SHIRT_COLOR;
+
+typedef enum
+{
+	/// <summary>
+	/// Type: T-shirt
+	/// Arg3: Size
+	/// </summary>
 	TSHIRT_SIZE_S,
 	TSHIRT_SIZE_M,
 	TSHIRT_SIZE_L,
-	TSHIRT_SIZE_XL,
+	TSHIRT_SIZE_XL
+}T_SHIRT_SIZE;
+
+typedef enum
+{
+	/// <summary>
+	/// Type: T-shirt
+	/// Arg4: Print
+	/// </summary>
 	TSHIRT_PRINT_EMPTY,
 	TSHIRT_PRINT_CARS,
 	TSHIRT_PRINT_GUNS,
 	TSHIRT_PRINT_ROSES,
-	TSHIRT_PRINT_HEART,
-	/// <summary>
-	/// Type: Cup
-	/// Arg1: Color
-	/// Arg2: Size
-	/// </summary>
-	CUP,
-	CUP_WHITE,
-	CUP_BLACK,
-	CUP_RED,
-	CUP_BLUE,
-	CUP_GREEN,
-	CUP_ORANGE,
-	CUP_L,
-	CUP_M,
-	CUP_S,
+	TSHIRT_PRINT_HEART
+}T_SHIRT_PRINT;
+
+typedef enum
+{
 	/// <summary>
 	/// Type: Pillow
-	/// Arg1: p_type
-	/// Arg2: if DM: DM_hero
-	/// Arg2: if U:  Color
-	/// Arg3: if U:  Print
+	/// Arg1: Typeof
 	/// </summary>
-	PILLOW,
 	PILLOW_DAKIMAKURA,
-	PILLOW_DM_L,
-	PILLOW_DM_S,
-	PILLOW_DM_REM,
-	PILLOW_DM_RAM,
-	PILLOW_DM_HITAGI,
-	PILLOW_DM_MAI,
-	PILLOW_DEFAULT,
+	PILLOW_DEFAULT
+}PILLOW_TYPE;
+
+typedef enum
+{
+	/// <summary>
+	/// Type: Pillow
+	/// Arg2: Color
+	/// </summary>
 	PILLOW_RED,
-	PILLOW_WHITE,
+	PILLOW_WHITE
+}PILLOW_DEF_COLOR;
+
+typedef enum
+{
+	/// <summary>
+	/// Type: Pillow
+	/// Arg3: Print
+	/// </summary>
 	PILLOW_FLOWERS,
 	PILLOW_HEART,
 	PILLOW_EMPTY
-}COMP_NUM;
+}PILLOW_DEF_PRINT;
 
-typedef struct
+typedef enum
 {
-	int component_price;
-	int component_lvl;
-	char* component_name;
-}component;
+	/// <summary>
+	/// Type: Pillow
+	/// Arg2: Size
+	/// </summary>
+	PILLOW_DM_L,
+	PILLOW_DM_S
+}PILLOW_DM_SIZE;
 
-typedef struct
+typedef enum
 {
-	int components_count;
-	component* components_array;
-}database;
+	/// <summary>
+	/// Type: Pillow
+	/// Arg3: Print
+	/// </summary>
+	PILLOW_DM_REM,
+	PILLOW_DM_RAM,
+	PILLOW_DM_HITAGI,
+	PILLOW_DM_MAI
+}PILLOW_DM_PRINT;
 
-typedef union
-{
-	uint64_t save;
-	uint8_t type;
-	uint8_t arg1;
-	uint8_t arg2;
-	uint8_t arg3;
-}configuration;
+TSHIRT_NAMES ts_names;

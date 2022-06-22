@@ -1,5 +1,10 @@
 ﻿#include "Structures.h"
 
+/// <summary>
+/// запись варианта
+/// </summary>
+/// <param name="conf"></param>
+
 void save(configuration* conf)
 {
 	char filename[21];
@@ -24,7 +29,7 @@ save_start:
 		}
 		else
 		{
-			fprintf(file, "%llu %llu %llu", conf->save1, conf->save2, conf->save3);
+			fprintf(file, "%llu %llu", conf->male, conf->save);
 			fclose(file);
 		}
 	}
@@ -47,14 +52,13 @@ save_start:
 				}
 				else
 				{
-					fprintf(file, "%llu %llu %llu", conf->save1, conf->save2, conf->save3);
+					fprintf(file, "%llu %llu", conf->male, conf->save);
 					fclose(file);
 				}
 			}
 			else
 			{
-				clearRowScreen(3);
-				goto save_start2;
+
 			}
 		}
 		else
@@ -86,7 +90,7 @@ load_start:
 	}
 	else
 	{
-		fscanf(file, "%llu %llu %llu", &(conf->save1), &(conf->save2), &(conf->save3));
+		fscanf(file, "%llu %llu", &(conf->male), &(conf->save));
 		fclose(file);
 	}
 }
@@ -95,10 +99,21 @@ int see_config(configuration* conf)
 {
 	int menu_selected_num = -1;
 
-t_menu_start:
 	menu_selected_num = -1;
 	system("cls");
-	printf(TSHIRT_SEE, "T-shirt", 10, ts_names.males[conf->arg1], ts_names.males_cost[conf->arg1], ts_names.sizes[conf->arg2], ts_names.sizes_cost[conf->arg2], ts_names.prints[conf->arg3], ts_names.prints_cost[conf->arg3], ts_names.colors[conf->arg4], ts_names.colors_cost[conf->arg4]);
+
+	switch (conf->male)
+	{
+	case 0:
+		printf(TSHIRT_SEE_MAN, "T-shirt", ts_names.ts_cost, ts_names.males[conf->male], ts_names.sizes[conf->t_man.size], ts_names.sizes_cost[conf->t_man.size], 
+			ts_names.prints[conf->t_man.print], ts_names.prints_cost[conf->t_man.print], ts_names.colors[conf->t_man.color], ts_names.colors_cost[conf->t_man.color]);
+		break;
+	case 1:
+		printf(TSHIRT_SEE_WOMAN, "T-shirt", ts_names.ts_cost, ts_names.males[conf->male], ts_names.sizes[conf->t_woman.size], ts_names.sizes_cost[conf->t_woman.size],
+			ts_names.prints[conf->t_woman.print], ts_names.prints_cost[conf->t_woman.print], ts_names.colors[conf->t_woman.color], ts_names.colors_cost[conf->t_woman.color],
+			ts_names.rhinestones[conf->t_woman.rhinestones], ts_names.rhinestones_cost[conf->t_woman.rhinestones]);
+		break;
+	}
 	while (menu_selected_num < 0 || menu_selected_num > 2)
 	{
 		menu_selected_num = read_num();
@@ -118,11 +133,20 @@ t_menu_start:
 int check_price(configuration* conf)
 {
 	int price = 0;
-	price += ts_names.ts_cost;
-	price += ts_names.males_cost[conf->arg1];
-	price += ts_names.prints_cost[conf->arg1];
-	price += ts_names.colors_cost[conf->arg1];
-	price += ts_names.sizes_cost[conf->arg1];
+	switch (conf->male)
+	{
+	case 0:
+		price += ts_names.ts_cost;
+		price += ts_names.prints_cost[conf->t_man.print];
+		price += ts_names.colors_cost[conf->t_man.color];
+		price += ts_names.sizes_cost[conf->t_man.size];
+	case 1:
+		price += ts_names.ts_cost;
+		price += ts_names.prints_cost[conf->t_woman.print];
+		price += ts_names.colors_cost[conf->t_woman.color];
+		price += ts_names.sizes_cost[conf->t_woman.size];
+		price += ts_names.rhinestones_cost[conf->t_woman.rhinestones];
+	}
 
 
 	int menu_selected_num = -1;
@@ -177,28 +201,58 @@ int t_shirt_menu_color(configuration* conf)
 t_menu_color_start:
 	menu_selected_num = -1;
 	system("cls");
-	printf(TSHIRT_MENU_COLOR, ts_names.colors[conf->arg4], ts_names.colors_cost[conf->arg4], ts_names.colors_cost[TSHIRT_COLOR_RED], ts_names.colors_cost[TSHIRT_COLOR_WHITE], ts_names.colors_cost[TSHIRT_COLOR_BLACK]);
-	while (menu_selected_num < 0 || menu_selected_num > 3)
+	switch (conf->male)
 	{
-		menu_selected_num = read_num();
-		switch (menu_selected_num)
+	case 0:
+		printf(TSHIRT_MENU_COLOR, ts_names.colors[conf->t_man.color], ts_names.colors_cost[conf->t_man.color], ts_names.colors_cost[TSHIRT_COLOR_RED], ts_names.colors_cost[TSHIRT_COLOR_WHITE], ts_names.colors_cost[TSHIRT_COLOR_BLACK]);
+		while (menu_selected_num < 0 || menu_selected_num > 3)
 		{
-		case 0:
-			return 0;
-		case 1:
-			conf->arg4 = TSHIRT_COLOR_RED;
-			goto t_menu_color_start;
-		case 2:
-			conf->arg4 = TSHIRT_COLOR_WHITE;
-			goto t_menu_color_start;
-		case 3:
-			conf->arg4 = TSHIRT_COLOR_BLACK;
-			goto t_menu_color_start;
-		default:
-			clearRowScreen(8);
-			printf(WRONG_NUMBER);
-			break;
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				conf->t_man.color = TSHIRT_COLOR_RED;
+				goto t_menu_color_start;
+			case 2:
+				conf->t_man.color = TSHIRT_COLOR_WHITE;
+				goto t_menu_color_start;
+			case 3:
+				conf->t_man.color = TSHIRT_COLOR_BLACK;
+				goto t_menu_color_start;
+			default:
+				clearRowScreen(8);
+				printf(WRONG_NUMBER);
+				break;
+			}
 		}
+		break;
+	case 1:
+		printf(TSHIRT_MENU_COLOR, ts_names.colors[conf->t_woman.color], ts_names.colors_cost[conf->t_woman.color], ts_names.colors_cost[TSHIRT_COLOR_RED], ts_names.colors_cost[TSHIRT_COLOR_WHITE], ts_names.colors_cost[TSHIRT_COLOR_BLACK]);
+		while (menu_selected_num < 0 || menu_selected_num > 3)
+		{
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				conf->t_woman.color = TSHIRT_COLOR_RED;
+				goto t_menu_color_start;
+			case 2:
+				conf->t_woman.color = TSHIRT_COLOR_WHITE;
+				goto t_menu_color_start;
+			case 3:
+				conf->t_woman.color = TSHIRT_COLOR_BLACK;
+				goto t_menu_color_start;
+			default:
+				clearRowScreen(8);
+				printf(WRONG_NUMBER);
+				break;
+			}
+		}
+		break;
 	}
 	return 0;
 }
@@ -210,9 +264,9 @@ int t_shirt_menu_print(configuration* conf)
 t_menu_print_start:
 	menu_selected_num = -1;
 	system("cls");
-	if (conf->arg1)
+	if (conf->male)
 	{
-		printf(TSHIRT_MENU_PRINT_FEMALE, ts_names.prints[conf->arg3], ts_names.prints_texts[conf->arg3], ts_names.prints_cost[conf->arg3], ts_names.prints_cost[TSHIRT_PRINT_EMPTY], ts_names.prints_cost[TSHIRT_PRINT_ROSES], ts_names.prints_cost[TSHIRT_PRINT_HEART]);
+		printf(TSHIRT_MENU_PRINT_FEMALE, ts_names.prints[conf->t_woman.print], ts_names.prints_texts[conf->t_woman.print], ts_names.prints_cost[conf->t_woman.print], ts_names.prints_cost[TSHIRT_PRINT_EMPTY], ts_names.prints_cost[TSHIRT_PRINT_ROSES], ts_names.prints_cost[TSHIRT_PRINT_HEART]);
 		while (menu_selected_num < 0 || menu_selected_num > 3)
 		{
 			menu_selected_num = read_num();
@@ -221,16 +275,13 @@ t_menu_print_start:
 			case 0:
 				return 0;
 			case 1:
-				conf->arg3 = TSHIRT_PRINT_EMPTY;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_woman.print = TSHIRT_PRINT_EMPTY;
 				goto t_menu_print_start;
 			case 2:
-				conf->arg3 = TSHIRT_PRINT_ROSES;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_woman.print = TSHIRT_PRINT_ROSES;
 				goto t_menu_print_start;
 			case 3:
-				conf->arg3 = TSHIRT_PRINT_HEART;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_woman.print = TSHIRT_PRINT_HEART;
 				goto t_menu_print_start;
 			default:
 				clearRowScreen(8);
@@ -241,7 +292,7 @@ t_menu_print_start:
 	}
 	else
 	{
-		printf(TSHIRT_MENU_PRINT_MALE, ts_names.prints[conf->arg3], ts_names.prints_texts[conf->arg3], ts_names.prints_cost[conf->arg3], ts_names.prints_cost[TSHIRT_PRINT_EMPTY], ts_names.prints_cost[TSHIRT_PRINT_CARS], ts_names.prints_cost[TSHIRT_PRINT_GUNS]);
+		printf(TSHIRT_MENU_PRINT_MALE, ts_names.prints[conf->t_man.print], ts_names.prints_texts[conf->t_man.print], ts_names.prints_cost[conf->t_man.print], ts_names.prints_cost[TSHIRT_PRINT_EMPTY], ts_names.prints_cost[TSHIRT_PRINT_CARS], ts_names.prints_cost[TSHIRT_PRINT_GUNS]);
 		while (menu_selected_num < 0 || menu_selected_num > 3)
 		{
 			menu_selected_num = read_num();
@@ -250,16 +301,13 @@ t_menu_print_start:
 			case 0:
 				return 0;
 			case 1:
-				conf->arg3 = TSHIRT_PRINT_EMPTY;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_man.print = TSHIRT_PRINT_EMPTY;
 				goto t_menu_print_start;
 			case 2:
-				conf->arg3 = TSHIRT_PRINT_CARS;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_man.print = TSHIRT_PRINT_CARS;
 				goto t_menu_print_start;
 			case 3:
-				conf->arg3 = TSHIRT_PRINT_GUNS;
-				strcpy(conf->word, ts_names.prints_texts[conf->arg3]);
+				conf->t_man.print = TSHIRT_PRINT_GUNS;
 				goto t_menu_print_start;
 			default:
 				clearRowScreen(8);
@@ -279,31 +327,64 @@ int t_shirt_menu_size(configuration* conf)
 t_menu_size_start:
 	menu_selected_num = -1;
 	system("cls");
-	printf(TSHIRT_MENU_SIZE, ts_names.sizes[conf->arg2], ts_names.sizes_cost[conf->arg2], ts_names.sizes_cost[TSHIRT_SIZE_S], ts_names.sizes_cost[TSHIRT_SIZE_M], ts_names.sizes_cost[TSHIRT_SIZE_L], ts_names.sizes_cost[TSHIRT_SIZE_XL]);
-	while (menu_selected_num < 0 || menu_selected_num > 4)
+	switch (conf->male)
 	{
-		menu_selected_num = read_num();
-		switch (menu_selected_num)
+	case 0:
+		printf(TSHIRT_MENU_SIZE, ts_names.sizes[conf->t_man.size], ts_names.sizes_cost[conf->t_man.size], ts_names.sizes_cost[TSHIRT_SIZE_S], ts_names.sizes_cost[TSHIRT_SIZE_M], ts_names.sizes_cost[TSHIRT_SIZE_L], ts_names.sizes_cost[TSHIRT_SIZE_XL]);
+		while (menu_selected_num < 0 || menu_selected_num > 4)
 		{
-		case 0:
-			return 0;
-		case 1:
-			conf->arg2 = TSHIRT_SIZE_S;
-			goto t_menu_size_start;
-		case 2:
-			conf->arg2 = TSHIRT_SIZE_M;
-			goto t_menu_size_start;
-		case 3:
-			conf->arg2 = TSHIRT_SIZE_L;
-			goto t_menu_size_start;
-		case 4:
-			conf->arg2 = TSHIRT_SIZE_XL;
-			goto t_menu_size_start;
-		default:
-			clearRowScreen(9);
-			printf(WRONG_NUMBER);
-			break;
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				conf->t_man.size = TSHIRT_SIZE_S;
+				goto t_menu_size_start;
+			case 2:
+				conf->t_man.size = TSHIRT_SIZE_M;
+				goto t_menu_size_start;
+			case 3:
+				conf->t_man.size = TSHIRT_SIZE_L;
+				goto t_menu_size_start;
+			case 4:
+				conf->t_man.size = TSHIRT_SIZE_XL;
+				goto t_menu_size_start;
+			default:
+				clearRowScreen(9);
+				printf(WRONG_NUMBER);
+				break;
+			}
 		}
+		break;
+	case 1:
+		printf(TSHIRT_MENU_SIZE, ts_names.sizes[conf->t_woman.size], ts_names.sizes_cost[conf->t_woman.size], ts_names.sizes_cost[TSHIRT_SIZE_S], ts_names.sizes_cost[TSHIRT_SIZE_M], ts_names.sizes_cost[TSHIRT_SIZE_L], ts_names.sizes_cost[TSHIRT_SIZE_XL]);
+		while (menu_selected_num < 0 || menu_selected_num > 4)
+		{
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				conf->t_woman.size = TSHIRT_SIZE_S;
+				goto t_menu_size_start;
+			case 2:
+				conf->t_woman.size = TSHIRT_SIZE_M;
+				goto t_menu_size_start;
+			case 3:
+				conf->t_woman.size = TSHIRT_SIZE_L;
+				goto t_menu_size_start;
+			case 4:
+				conf->t_woman.size = TSHIRT_SIZE_XL;
+				goto t_menu_size_start;
+			default:
+				clearRowScreen(9);
+				printf(WRONG_NUMBER);
+				break;
+			}
+		}
+		break;
 	}
 	return 0;
 }
@@ -315,7 +396,7 @@ int t_shirt_menu_male(configuration* conf)
 t_menu_male_start:
 	menu_selected_num = -1;
 	system("cls");
-	printf(TSHIRT_MENU_MALE, ts_names.males[conf->arg1], ts_names.males_cost[conf->arg1], ts_names.males_cost[TSHIRT_MAN], ts_names.males_cost[TSHIRT_WOMAN]);
+	printf(TSHIRT_MENU_MALE, ts_names.males[conf->male]);
 	while (menu_selected_num < 0 || menu_selected_num > 2)
 	{
 		menu_selected_num = read_num();
@@ -324,13 +405,43 @@ t_menu_male_start:
 		case 0:
 			return 0;
 		case 1:
-			conf->arg1 = TSHIRT_MAN;
-			conf->arg3 = TSHIRT_PRINT_EMPTY;
+			conf->male = 0;
 			goto t_menu_male_start;
 		case 2:
-			conf->arg1 = TSHIRT_WOMAN;
-			conf->arg3 = TSHIRT_PRINT_EMPTY;
+			conf->male = 1;
 			goto t_menu_male_start;
+		default:
+			clearRowScreen(7);
+			printf(WRONG_NUMBER);
+			break;
+		}
+	}
+	return 0;
+}
+
+int t_shirt_menu_rhine(configuration* conf) 
+{
+	int menu_selected_num = -1;
+
+t_menu_rhine_start:
+	menu_selected_num = -1;
+	system("cls");
+	printf(TSHIRT_MENU_RHINE, ts_names.rhinestones[conf->t_woman.rhinestones],
+		ts_names.rhinestones[TSHIRT_RHINESTONES_YES], ts_names.rhinestones_cost[TSHIRT_RHINESTONES_YES],
+		ts_names.rhinestones[TSHIRT_RHINESTONES_NO], ts_names.rhinestones_cost[TSHIRT_RHINESTONES_NO]);
+	while (menu_selected_num < 0 || menu_selected_num > 2)
+	{
+		menu_selected_num = read_num();
+		switch (menu_selected_num)
+		{
+		case 0:
+			return 0;
+		case 1:
+			conf->t_woman.rhinestones = TSHIRT_RHINESTONES_YES;
+			goto t_menu_rhine_start;
+		case 2:
+			conf->t_woman.rhinestones = TSHIRT_RHINESTONES_NO;
+			goto t_menu_rhine_start;
 		default:
 			clearRowScreen(7);
 			printf(WRONG_NUMBER);
@@ -347,32 +458,77 @@ int t_shirt_menu(configuration* conf)
 t_menu_start:
 	menu_selected_num = -1;
 	system("cls");
-	printf(TSHIRT_MENU, "T-shirt", 10, ts_names.males[conf->arg1], ts_names.males_cost[conf->arg1], ts_names.sizes[conf->arg2], ts_names.sizes_cost[conf->arg2], ts_names.prints[conf->arg3], ts_names.prints_cost[conf->arg3], ts_names.colors[conf->arg4], ts_names.colors_cost[conf->arg4]);
-	while (menu_selected_num < 0 || menu_selected_num > 2)
+	switch (conf->male)
 	{
-		menu_selected_num = read_num();
-		switch (menu_selected_num)
+	case 0:
+		printf(TSHIRT_MENU_MAN, "T-shirt", 10, ts_names.males[conf->male], 
+			ts_names.sizes[conf->t_man.size], ts_names.sizes_cost[conf->t_man.size],
+			ts_names.prints[conf->t_man.print], ts_names.prints_cost[conf->t_man.print],
+			ts_names.colors[conf->t_man.color], ts_names.colors_cost[conf->t_man.color]);
+		while (menu_selected_num < 0 || menu_selected_num > 2)
 		{
-		case 0:
-			return 0;
-		case 1:
-			t_shirt_menu_male(conf);
-			goto t_menu_start;
-		case 2:
-			t_shirt_menu_size(conf);
-			goto t_menu_start;
-		case 3:
-			t_shirt_menu_print(conf);
-			goto t_menu_start;
-		case 4:
-			t_shirt_menu_color(conf);
-			goto t_menu_start;
-		default:
-			clearRowScreen(9);
-			printf(WRONG_NUMBER);
-			break;
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				t_shirt_menu_male(conf);
+				goto t_menu_start;
+			case 2:
+				t_shirt_menu_size(conf);
+				goto t_menu_start;
+			case 3:
+				t_shirt_menu_print(conf);
+				goto t_menu_start;
+			case 4:
+				t_shirt_menu_color(conf);
+				goto t_menu_start;
+			default:
+				clearRowScreen(9);
+				printf(WRONG_NUMBER);
+				break;
+			}
 		}
+		break;
+	case 1:
+		printf(TSHIRT_MENU_WOMAN, "T-shirt", 10, ts_names.males[conf->male],
+			ts_names.sizes[conf->t_woman.size], ts_names.sizes_cost[conf->t_woman.size],
+			ts_names.prints[conf->t_woman.print], ts_names.prints_cost[conf->t_woman.print],
+			ts_names.colors[conf->t_woman.color], ts_names.colors_cost[conf->t_woman.color],
+			ts_names.rhinestones[conf->t_woman.rhinestones], ts_names.rhinestones_cost[conf->t_woman.rhinestones]);
+		
+		while (menu_selected_num < 0 || menu_selected_num > 2)
+		{
+			menu_selected_num = read_num();
+			switch (menu_selected_num)
+			{
+			case 0:
+				return 0;
+			case 1:
+				t_shirt_menu_male(conf);
+				goto t_menu_start;
+			case 2:
+				t_shirt_menu_size(conf);
+				goto t_menu_start;
+			case 3:
+				t_shirt_menu_print(conf);
+				goto t_menu_start;
+			case 4:
+				t_shirt_menu_color(conf);
+				goto t_menu_start;
+			case 5:
+				t_shirt_menu_rhine(conf);
+				goto t_menu_start;
+			default:
+				clearRowScreen(9);
+				printf(WRONG_NUMBER);
+				break;
+			}
+		}
+		break;
 	}
+	
 	return 0;
 }
 
@@ -442,16 +598,17 @@ int main()
 
 	configuration* conf = &config;
 	init();
-	strcpy(conf->word, "              ");
-	conf->arg1 = TSHIRT_MAN;
-	conf->arg2 = TSHIRT_COLOR_RED;
-	conf->arg3 = TSHIRT_SIZE_S;
-	conf->arg4 = TSHIRT_PRINT_EMPTY;
+	conf->male = 0;
+	conf->t_man.color = TSHIRT_COLOR_RED;
+	conf->t_man.size = TSHIRT_SIZE_S;
+	conf->t_man.print = TSHIRT_PRINT_EMPTY;
+	conf->t_woman.color = TSHIRT_COLOR_RED;
+	conf->t_woman.size = TSHIRT_SIZE_S;
+	conf->t_woman.print = TSHIRT_PRINT_EMPTY;
+	conf->t_woman.rhinestones = TSHIRT_RHINESTONES_NO;
 
 
 	MENU_TYPE st_men;
-
-	//config.save[0] = 0;
 
 start:
 	st_men = start_menu();

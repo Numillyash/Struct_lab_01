@@ -22,10 +22,9 @@ void init();
 //int cup_prices[] = { 1 };
 //int pillow_prices[] = { 1 };
 
-typedef struct{
+typedef struct {
 	int  ts_cost;
 	char males[2][7];
-	int  males_cost[2];
 	char colors[3][6];
 	int  colors_cost[3];
 	char sizes[4][3];
@@ -33,36 +32,9 @@ typedef struct{
 	char prints[5][10];
 	char prints_texts[5][20];
 	int  prints_cost[5];
+	char rhinestones[2][4];
+	int rhinestones_cost[2];
 }TSHIRT_NAMES;
-
-typedef union
-{
-	struct
-	{
-		uint64_t save1;
-		uint64_t save2;
-		uint64_t save3;
-	};
-	uint64_t save[3];
-	struct {
-		uint8_t word[20];
-		uint8_t arg4;
-		uint8_t arg3;
-		uint8_t arg2;
-		uint8_t arg1;
-		//uint32_t type;
-	};
-}configuration;
-
-typedef enum
-{
-	/// <summary>
-	/// Type: T-shirt
-	/// Arg1: Male
-	/// </summary>
-	TSHIRT_MAN,
-	TSHIRT_WOMAN
-}T_SHIRT_MALE;
 
 typedef enum
 {
@@ -102,55 +74,33 @@ typedef enum
 
 typedef enum
 {
-	/// <summary>
-	/// Type: Pillow
-	/// Arg1: Typeof
-	/// </summary>
-	PILLOW_DAKIMAKURA,
-	PILLOW_DEFAULT
-}PILLOW_TYPE;
+	TSHIRT_RHINESTONES_NO,
+	TSHIRT_RHINESTONES_YES
+}T_SHIRT_RHINESTONES;
 
-typedef enum
-{
-	/// <summary>
-	/// Type: Pillow
-	/// Arg2: Color
-	/// </summary>
-	PILLOW_RED,
-	PILLOW_WHITE
-}PILLOW_DEF_COLOR;
+typedef struct {
+	uint8_t color;
+	uint8_t size;
+	uint8_t print;
+} TSHIRT_MAN;
 
-typedef enum
-{
-	/// <summary>
-	/// Type: Pillow
-	/// Arg3: Print
-	/// </summary>
-	PILLOW_FLOWERS,
-	PILLOW_HEART,
-	PILLOW_EMPTY
-}PILLOW_DEF_PRINT;
+typedef struct {
+	uint8_t rhinestones;
+	uint8_t color;
+	uint8_t size;
+	uint8_t print;
+} TSHIRT_WOMAN;
 
-typedef enum
+typedef struct
 {
-	/// <summary>
-	/// Type: Pillow
-	/// Arg2: Size
-	/// </summary>
-	PILLOW_DM_L,
-	PILLOW_DM_S
-}PILLOW_DM_SIZE;
-
-typedef enum
-{
-	/// <summary>
-	/// Type: Pillow
-	/// Arg3: Print
-	/// </summary>
-	PILLOW_DM_REM,
-	PILLOW_DM_RAM,
-	PILLOW_DM_HITAGI,
-	PILLOW_DM_MAI
-}PILLOW_DM_PRINT;
+	uint64_t male;
+	union
+	{
+		uint64_t save;
+		TSHIRT_MAN t_man;
+		TSHIRT_WOMAN t_woman;
+	};
+	
+}configuration;
 
 TSHIRT_NAMES ts_names;

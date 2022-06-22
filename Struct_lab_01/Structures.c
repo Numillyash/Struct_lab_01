@@ -14,8 +14,6 @@ void get_costs()
 	else
 	{
 		xyz = fscanf(file, "T-Shirt cost: %d\n", &(ts_names.ts_cost));
-		xyz = fscanf(file, "T-Shirt male cost: %d\n", &(ts_names.males_cost[0]));
-		xyz = fscanf(file, "T-Shirt female cost: %d\n", &(ts_names.males_cost[1]));
 		xyz = fscanf(file, "T-Shirt color red cost: %d\n", &(ts_names.colors_cost[0]));
 		xyz = fscanf(file, "T-Shirt color white cost: %d\n", &(ts_names.colors_cost[1]));
 		xyz = fscanf(file, "T-Shirt color black cost: %d\n", &(ts_names.colors_cost[2]));
@@ -28,6 +26,9 @@ void get_costs()
 		xyz = fscanf(file, "T-Shirt print guns cost: %d\n", &(ts_names.prints_cost[2]));
 		xyz = fscanf(file, "T-Shirt print roses cost: %d\n", &(ts_names.prints_cost[3]));
 		xyz = fscanf(file, "T-Shirt print heart cost: %d\n", &(ts_names.prints_cost[4]));
+
+		xyz = fscanf(file, "T-Shirt no rhinestones cost: %d\n", &(ts_names.rhinestones_cost[0]));
+		xyz = fscanf(file, "T-Shirt rhinestones cost: %d\n", &(ts_names.rhinestones_cost[1]));
 	}
 }
 
@@ -35,13 +36,13 @@ void init()
 {
 	get_costs();
 	//ts_names.ts_cost = 10;
-	strcpy(ts_names.males[0], "male  ");
-	strcpy(ts_names.males[1],"female");
-	//ts_names.males_cost[0] = 2;
-	//ts_names.males_cost[1] = 3;
 	strcpy(ts_names.colors[0] , "red  ");
 	strcpy(ts_names.colors[1] , "white");
 	strcpy(ts_names.colors[2] , "black");
+
+
+	strcpy(ts_names.males[0], "male  ");
+	strcpy(ts_names.males[1], "female");
 	//ts_names.colors_cost[0] = 5;
 	//ts_names.colors_cost[1] = 3;
 	//ts_names.colors_cost[2] = 3;
@@ -63,6 +64,10 @@ void init()
 	strcpy(ts_names.prints_texts[3], "Flowers!      ");
 	strcpy(ts_names.prints[4] , "heart");
 	strcpy(ts_names.prints_texts[4], "Believe in you");
+
+	strcpy(ts_names.rhinestones[0], "No");
+	strcpy(ts_names.rhinestones[1], "Yes");
+
 	//ts_names.prints_cost[0] = 0;
 	//ts_names.prints_cost[1] = 10;
 	//ts_names.prints_cost[2] = 15;

@@ -8,9 +8,11 @@
 
 #define CREATE_MENU "What will we do?\n    1: T-SHIRT\n    2: Pillow (in progress)\n\n0: Back\n\nType a number here to choose\n> "
 
-#define TSHIRT_MENU "Type: %s, cost: %d\n\n1:     Male: %s, cost: %d\n2:     Size: %s, cost: %d\n3:     Print: %s, cost: %d\n4:     Color: %s, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
+#define TSHIRT_MENU_MAN "Type: %s, cost: %d\n\n1:     Male: %s\n2:     Size: %s, cost: %d\n3:     Print: %s, cost: %d\n4:     Color: %s, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
 
-#define TSHIRT_MENU_MALE "Male: %s, cost: %d\n\n1:     male  , cost: %d\n2:     female, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
+#define TSHIRT_MENU_WOMAN "Type: %s, cost: %d\n\n1:     Male: %s\n2:     Size: %s, cost: %d\n3:     Print: %s, cost: %d\n4:     Color: %s, cost: %d\n5:     Rhinestones: %s, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
+
+#define TSHIRT_MENU_MALE "Male: %s\n\n1:     male \n2:     female\n\n0:     Back\n\nType a number here to choose\n> "
 
 #define TSHIRT_MENU_SIZE "Size: %s, cost: %d\n\n1:     S , cost: %d\n2:     M , cost: %d\n3:     L , cost: %d\n4:     XL, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
 
@@ -20,9 +22,13 @@
 
 #define TSHIRT_MENU_COLOR "Color: %s, cost: %d\n\n1:     red  , cost: %d\n2:     white, cost: %d\n3:     black, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
 
-#define TSHIRT_SEE "Type: %s, cost: %d\nMale: %s, cost: %d\nSize: %s, cost: %d\nPrint: %s, cost: %d\nColor: %s, cost: %d\n\n0:     Back\n\nType 0 to exit\n> "
+#define TSHIRT_SEE_MAN "Type: %s, cost: %d\nMale: %s\nSize: %s, cost: %d\nPrint: %s, cost: %d\nColor: %s, cost: %d\n\n0:     Back\n\nType 0 to exit\n> "
+
+#define TSHIRT_SEE_WOMAN "Type: %s, cost: %d\nMale: %s\nSize: %s, cost: %d\nPrint: %s, cost: %d\nColor: %s, cost: %d\nRhinestones: %s, cost: %d\n\n0:     Back\n\nType 0 to exit\n> "
 
 #define COST_SEE "Cost of your config: %d\n\n0: Back\n\nType 0 to exit\n> "
+
+#define TSHIRT_MENU_RHINE "Rhinestones: %s\n\n1:     %s, cost: %d \n2:     %s, cost: %d\n\n0:     Back\n\nType a number here to choose\n> "
 
 #define SAVE_TYPE "It's time to save your config!\n\nType your filename (up to 20 symbols, more will ignore)\n> "
 #define SAVE_ERR1 "\nYou really want to overwrite save? (y/n)\n> "
